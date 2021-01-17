@@ -1,5 +1,7 @@
 import { createElement } from '../helpers/domHelper';
 import { createFighterImage } from './fighterPreview';
+import { showWinnerModal } from './modal/winner';
+import { fight } from './fight';
 
 export function renderArena(selectedFighters) {
   const root = document.getElementById('root');
@@ -8,9 +10,7 @@ export function renderArena(selectedFighters) {
   root.innerHTML = '';
   root.append(arena);
 
-  // todo:
-  // - start the fight
-  // - when fight is finished show winner
+  fight(...selectedFighters).then((winner) => showWinnerModal(winner));
 }
 
 function createArena(selectedFighters) {
@@ -53,6 +53,18 @@ function createFighters(firstFighter, secondFighter) {
 
   battleField.append(firstFighterElement, secondFighterElement);
   return battleField;
+}
+
+function createFighter(fighter, position) {
+  const imgElement = createFighterImage(fighter);
+  const positionClassName = position === 'right' ? 'arena___right-fighter' : 'arena___left-fighter';
+  const fighterElement = createElement({
+    tagName: 'div',
+    className: `arena___fighter ${positionClassName}`,
+  });
+
+  fighterElement.append(imgElement);
+  return fighterElement;
 }
 
 function createFighter(fighter, position) {
