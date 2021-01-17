@@ -1,8 +1,9 @@
 import { controls } from '../../constants/controls';
+import { createElement } from '../helpers/domHelper';
 
 export async function fight(firstFighter, secondFighter) {
-  return new Promise((resolve) => { 
-    
+  return new Promise((resolve) => {
+
     const healthBarsContainer = document.getElementsByClassName('arena___health-bar');
     const healthBars = [ ...healthBarsContainer ];
     const statusViewContainer = document.getElementsByClassName('arena___health-indicator');
@@ -72,7 +73,7 @@ export async function fight(firstFighter, secondFighter) {
 
       showStatus(defender, `-${totalDamage.toFixed(1)}`);
       defender.currentHealth = defender.currentHealth - totalDamage / defender.health * 100;
-      if(defender.currentHealth <= 0) {
+      if(defender.currentHealth < 0) {
         document.removeEventListener('keydown', onDown);
         document.removeEventListener('keyup', onUp);
         resolve(attacker);
@@ -149,26 +150,20 @@ export async function fight(firstFighter, secondFighter) {
 
     document.addEventListener('keydown', onDown);
     document.addEventListener('keyup', onUp);
-    
-
-    // resolve the promise with the winner when fight is over
-  })
+  });
 }
 
 export function getDamage(attacker, defender) {
   const damage = getHitPower(attacker) - getBlockPower(defender);
   return damage > 0 ? damage : 0;
-  // return damage
 }
 
 export function getHitPower(fighter) {
   const criticalHitChance = fighter.critInput === 3 ? 2 : Math.random() + 1;
   return fighter.attack * criticalHitChance;
-  // return hit power
 }
 
 export function getBlockPower(fighter) {
   const dodjeChance = Math.random() + 1;
   return fighter.defense * dodjeChance;
-  // return block power
 }
