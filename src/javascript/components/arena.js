@@ -66,15 +66,3 @@ function createFighter(fighter, position) {
   fighterElement.append(imgElement);
   return fighterElement;
 }
-
-function createFighter(fighter, position) {
-  const imgElement = createFighterImage(fighter);
-  const positionClassName = position === 'right' ? 'arena___right-fighter' : 'arena___left-fighter';
-  const fighterElement = createElement({
-    tagName: 'div',
-    className: `arena___fighter ${positionClassName}`,
-  });
-
-  fighterElement.append(imgElement);
-  return fighterElement;
-}
